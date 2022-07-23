@@ -5,8 +5,8 @@ const fs = require("fs-extra");
 const buildPath = path.resolve(__dirname, "build");
 fs.removeSync(buildPath);
 
-const campaignPath = path.resolve(__dirname, "contracts", "Campaign.sol");
-const source = fs.readFileSync(campaignPath, "utf8");
+const postPath = path.resolve(__dirname, "contracts", "Post.sol");
+const source = fs.readFileSync(postPath, "utf8");
 const output = solc.compile(source, 1).contracts;
 
 fs.ensureDirSync(buildPath);

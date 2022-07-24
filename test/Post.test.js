@@ -3,18 +3,34 @@ const ganache = require('ganache-cli');
 const Web3 = require('web3');
 const web3 = new Web3(ganache.provider());
 
+const compiledFactory = require('../ethereum/build/PostFactory.json');
 const compiledPost = require('../ethereum/build/Post.json');
 
 let accounts;
+let factory
 let post
 
 beforeEach(async () => {
   accounts = await web3.eth.getAccounts();
 
-  post = await new web3.eth.Contract(JSON.parse(compiledPost.interface))
-  .deploy({ data: compiledPost.bytecode, arguments: ['First Post', 'content'] })
-  .send ({ from: accounts[0], gas: '3000000' });
-  });
+  factory = await new web3.eth.Contract(JSON.parse(compiledFactory.interface))
+    .deploy({ data: compiledFactory.bytecode })
+    .send({ from: accounts[0], gas: '1000000' });
+
+    //Uses factory to create a campaign
+    await factory.methods.createPost('Title', 'Content').send({
+      from: accounts[0],
+      gas: '1000000'
+    });
+
+//Fancy way to say take the returned collection and assign the value to the first index of the variable
+//Since we're calling an already deployed contract, we specify an address
+  [postAddress] = await factory.methods.getDeployedPost().call();
+  post = await new web3.eth.Contract(
+  JSON.parse(compiledPost.interface),
+  postAddress
+  );
+});
 
 describe('Post contract', () => {
   it('deploys a post', () => {
@@ -34,9 +50,16 @@ describe('Post contract', () => {
   });
 
   it('upvotes a post', async () => {
-    await post.methods.upVote().send({ from: accounts[0], value: 100 });
+    await post.methods.upVote().send({ from: accounts[0], value: web3.utils.toWei('1', 'ether') });
     const upVoteCount = await post.methods.upVoteCount().call();
     console.log(upVoteCount);
     assert.equal(1, upVoteCount);
+  })
+
+  it ('upvote sends ether to poster', async () => {
+    const balance = await web3.eth.getBalance(accounts[0])
+    await post.methods.upVote().send({ from: accounts[1], value: web3.utils.toWei('1', 'ether') });
+    const finalBalance = await web3.eth.getBalance(accounts[0]);
+    assert(balance > finalBalance);
   })
 })

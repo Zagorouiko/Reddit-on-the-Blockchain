@@ -1,19 +1,20 @@
 pragma solidity ^0.4.17;
 
 contract PostFactory {
-    Post[] public deployedPost;
+    address[] public deployedPostAddress;
 
     function createPost(string title, string content) public {
         Post newPost = new Post(msg.sender, title, content);
-        deployedPost.push(newPost);
+        deployedPostAddress.push(newPost);
     }
 
-    function getDeployedPost() public view returns (Post[]) {
-        return deployedPost;
+    function getDeployedPostAddress() public view returns (address[]) {
+        return deployedPostAddress;
     }
 }
 
 contract Post {
+
     address public originalPoster;
     string public title;
     string public content;
@@ -31,11 +32,7 @@ contract Post {
         originalPoster.transfer(this.balance);
     }
 
-    function getPostInfo() public view returns(string, string, address) {
-      return (
-          title,
-          content,
-          originalPoster
-        );
+    function getTitle() public view returns(string) {
+      return title;
     }
 }

@@ -1,7 +1,10 @@
 
-deploy contract via infura
-Add routing
+
 Update solidity code to latest version
 
 github:
 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
+
+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
+
+git remote set-url origin https://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@github.com/Zagorouiko/Reddit-on-the-Blockchain.git

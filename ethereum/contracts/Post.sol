@@ -35,4 +35,12 @@ contract Post {
     function getTitle() public view returns(string) {
       return title;
     }
+
+    function getContent() public view returns(string) {
+      return content;
+    }
+
+     function getUpVotes() public view returns(uint) {
+      return upVoteCount;
+    }
 }

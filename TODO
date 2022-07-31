@@ -1,10 +1,8 @@
-
-
 Update solidity code to latest version
+**Look into returning an array of data instead of doing a get for each property
+
 
 github:
-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
+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
 
-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
-
-git remote set-url origin https://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@github.com/Zagorouiko/Reddit-on-the-Blockchain.git
+git remote set-url origin https://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@github.com/Zagorouiko/Reddit-on-the-Blockchain.git

@@ -4,6 +4,7 @@ import factory from '../ethereum/factory';
 import Post from '../ethereum/post';
 import Layout from '../components/Layout';
 import { Link } from '../routes';
+import PostBox from '../components/PostBox';
 
 class Homepage extends Component {
   static async getInitialProps() {
@@ -24,25 +25,37 @@ class Homepage extends Component {
       return { posts: posts, titles: titles, contents: contents, upVotes: upVotes};
   }
 
-  renderPosts() {
-    var items = [];
-    for (let i = 0; i < this.props.posts.length; i++) {
-    var item =
-      {
-      header: "Votes: " + this.props.upVotes[i] + " // Posted by: " + this.props.posts[i],
-      description: this.props.contents[i],
-      meta:  this.props.titles[i],
-      fluid: true
-    }
-    items.push(item);
-  }
-    return <Card.Group items={items} />
+//   renderPosts() {
+//     var items = [];
+//     for (let i = 0; i < this.props.posts.length; i++) {
+//     var item =
+//       {
+//       header: "Votes: " + this.props.upVotes[i] + " // Posted by: " + this.props.posts[i],
+//       description: this.props.contents[i],
+//       meta:  this.props.titles[i],
+//       fluid: true
+//     }
+//     items.push(item);
+//   }
+//     return <Card.Group items={items} />
+// }
+
+renderPostBox() {
+  return this.props.posts.map((post, index) => {
+    return <PostBox
+    key={index}
+    post={this.props.posts[index]}
+    title={this.props.titles[index]}
+    content={this.props.contents[index]}
+    upVotes={this.props.upVotes[index]}
+    />;
+  })
 }
 
     render() {
     return(
       <Layout>
-        {this.renderPosts()}
+        {this.renderPostBox()}
       </Layout>
     );
   }

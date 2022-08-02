@@ -15,10 +15,17 @@ contract PostFactory {
 
 contract Post {
 
+    struct Comment {
+        string comment;
+        address owner;
+    }
+
     address public originalPoster;
     string public title;
     string public content;
     uint public upVoteCount;
+    Comment[] public comments;
+    uint public commentsCount;
 
     function Post(address creator, string _title, string _content) public {
         originalPoster = creator;
@@ -42,5 +49,22 @@ contract Post {
 
      function getUpVotes() public view returns(uint) {
       return upVoteCount;
+    }
+
+    function createComment(string comment) public  {
+        Comment memory newComment = Comment({
+            comment: comment,
+            owner: msg.sender
+        });
+        commentsCount++;
+        comments.push(newComment);
+    }
+
+    function getCommentsCount() public view returns(uint) {
+        return comments.length;
+    }
+
+    function getComments() private view returns(Comment[]) {
+        return comments;
     }
 }

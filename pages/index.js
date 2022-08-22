@@ -22,7 +22,11 @@ class Homepage extends Component {
         return Post(upVote).methods.getUpVotes().call();
       }));
 
-      return { posts: posts, titles: titles, contents: contents, upVotes: upVotes};
+      const address = await Promise.all(posts.map(async (address) => {
+        return Post(address).methods.getAddress().call();
+      }));
+
+      return { posts, titles, contents, upVotes, address};
   }
 
 //   renderPosts() {
@@ -44,6 +48,7 @@ renderPostBox() {
   return this.props.posts.map((post, index) => {
     return <PostBox
     key={index}
+    address={this.props.address[index]}
     post={this.props.posts[index]}
     title={this.props.titles[index]}
     content={this.props.contents[index]}

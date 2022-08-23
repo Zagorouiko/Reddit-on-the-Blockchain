@@ -34,7 +34,7 @@ class PostShow extends Component {
       })
     );
 
-    return { post, title, content, upVotes, address, comments, commentCount, address: props.query.address };
+    return { post, title, content, upVotes, address, comments, commentCount, address };
     }
 
   onSubmit = async (event) => {
@@ -45,13 +45,9 @@ class PostShow extends Component {
 
   this.setState({ loading: true, errorMessage: '' });
   try {
-    if (this.props.commentCount == undefined) {
-      console.log(this.props.commentCount);
-      console.log(this.state.commentIndex);
+    if (this.props.commentCount == 0) {
       await this.props.post.methods.createComment(this.state.commentIndex, this.state.comment, accounts[0], time).send({ from: accounts[0]});
     } else {
-      console.log(this.props.commentCount);
-      console.log(this.state.commentIndex);
       this.setState({ commentIndex: this.props.commentCount})
       await this.props.post.methods.createComment(this.state.commentIndex, this.state.comment, accounts[0], time).send({ from: accounts[0]});
     }

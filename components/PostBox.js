@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Card, Button, Icon, Container, Header, Divider, Grid, Message } from 'semantic-ui-react';
 import Post from '../ethereum/post';
+import factory from '../ethereum/factory';
 import web3 from '../ethereum/web3';
 import { Link } from '../routes';
 

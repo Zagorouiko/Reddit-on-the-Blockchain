@@ -1,8 +1,8 @@
-Update solidity code to latest version
-**Look into returning an array of data instead of doing a get for each property
+Fix OP address on post detail page
+Also fix [object promise] in the url in detail page too
 
 
 github:
-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
+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
 
-git remote set-url origin https://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@github.com/Zagorouiko/Reddit-on-the-Blockchain.git
+git remote set-url origin https://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@github.com/Zagorouiko/Reddit-on-the-Blockchain.git

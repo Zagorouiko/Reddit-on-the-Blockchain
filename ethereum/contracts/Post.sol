@@ -74,10 +74,9 @@ contract Post {
       return originalPoster;
     }
 
-    function createComment(string _comment, address _owner, string _date) public  {
-        uint commentIndex = this.getCommentsCount() - 1;
+    function createComment(uint _index, string _comment, address _owner, string _date) public  {
         Comment memory newComment = Comment({
-            index: commentIndex,
+            index: _index,
             originalCommentPoster: msg.sender,
             comment: _comment,
             owner: _owner,

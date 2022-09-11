@@ -1,8 +1,20 @@
-Fix OP address on post detail page
-Also fix [object promise] in the url in detail page too
+Fix auth/network error in create posts - env variables are not getting to the ipfs file (figure out why)
+
+Styling
+Create a background video component of the svg instead
+Make the reddit logo into a block
+
+Tomorrow (9/5)
+Upload and serve site to Heroku
+Finish test writing
 
 
 github:
 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
 
 git remote set-url origin https://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@github.com/Zagorouiko/Reddit-on-the-Blockchain.git
+
+
+background-image: url("data:image/svg+xml,${svgString}");
+background-size: cover;
+background-repeat: no-repeat;

@@ -2,37 +2,68 @@ import React, { Component } from 'react';
 import Layout from '../../components/Layout';
 import { Form, Button, Input, Message, TextArea } from 'semantic-ui-react';
 import factory from '../../ethereum/factory';
-import web3 from '../../ethereum/web3';
+import post from '../../ethereum/post';
+import { web3, metamaskStatus } from '../../ethereum/web3';
 import { Router } from '../../routes';
+import ipfs from '../../ethereum/ipfs';
+
 
 class PostNew extends Component {
   state = {
   title: '',
   content: '',
   errorMessage: '',
-  loading: false
+  loading: false,
+  result: '',
+  transactionHash:'',
+  buffer:''
 };
 
-  onSubmit = async (event) => {
-  event.preventDefault();
+captureFile = (event) => {
+        console.log('captured');
+        event.stopPropagation()
+        event.preventDefault()
+        const file = event.target.files[0]
+        console.log(file);
+        let reader = new window.FileReader()
+        reader.readAsArrayBuffer(file)
+        reader.onloadend = () => this.convertToBuffer(reader)
+      };
 
-  this.setState({ loading: true });
+      convertToBuffer = async(reader) => {
+        console.log('buffering');
+       const buffer = await Buffer.from(reader.result);
+       this.setState({buffer: buffer});
+     };
 
-  try {
-  const accounts = await web3.eth.getAccounts();
-  await factory.methods
-  .createPost(this.state.title, this.state.content)
-  .send({
-    from: accounts[0]
-  });
+onSubmit = async (event) => {
+    event.preventDefault();
+    this.setState({ loading: true });
+    try {
+      const accounts = await web3.eth.getAccounts();
+      console.log('Sending from Metamask account: ' + accounts[0]);
 
-  Router.pushRoute('/');
-} catch (err) {
-  this.setState({ errorMessage: err.message })
-}
+      if (this.state.buffer !== '') {
+        const result = await ipfs.add(this.state.buffer);
+        this.setState({ ipfsHash: result.path });
+      } else {
+        this.setState({ ipfsHash: '' });
+      }
 
-this.setState({ loading: false })
-};
+      await factory.methods
+      .createPost(this.state.title, this.state.content, this.state.ipfsHash)
+      .send({ from: accounts[0] });
+
+      Router.pushRoute('/');
+      } catch (err) {
+        if (err.message == ('Invalid JSON RPC response: ""' || 'Cannot read properties of undefined (reading "eth")')) {
+          this.setState({ errorMessage: 'Metamask is not installed, please navigate to https://metamask.io/download/' });
+        } else {
+          this.setState({ errorMessage: err.message });
+        }
+      }
+       this.setState({ loading: false });
+    };
 
   render() {
     return (
@@ -55,10 +86,15 @@ this.setState({ loading: false })
             onChange={event => this.setState({ content: event.target.value })}
             />
           </Form.Field>
-
-          <Message error header="Oops" content={this.state.errorMessage} />
-          <Button loading={this.state.loading} primary>Create</Button>
+          <h3> Choose file to send to IPFS </h3>
+            <Input
+              type = "file"
+              onChange = {this.captureFile}
+            />
+            <Message error header="Oops" content={this.state.errorMessage} />
+            <Button loading={this.state.loading} primary>Create</Button>
         </Form>
+        <p>{this.state.result}</p>
       </Layout>
     )
   }

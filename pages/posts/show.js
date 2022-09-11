@@ -3,7 +3,7 @@ import Post from '../../ethereum/post';
 import Layout from '../../components/Layout';
 import PostBox from '../../components/PostBox';
 import CommentDetails from '../../components/CommentDetails';
-import web3 from '../../ethereum/web3';
+import { web3, metamaskStatus } from '../../ethereum/web3';
 import { Router } from '../../routes';
 import { Card, Button, Icon, Container, Header, Divider, Grid, Comment, Form, Input } from 'semantic-ui-react';
 import moment from 'moment';
@@ -22,11 +22,13 @@ class PostShow extends Component {
     const post = Post(props.query.address);
     const address = props.query.address;
     const commentCount = await post.methods.getCommentsCount().call();
+    const originalPoster = await post.methods.getAddress().call();
 
     //Do a single call to get the data. Like getSummary from campaigns
     const title = await post.methods.getTitle().call();
     const content = await post.methods.getContent().call();
     const upVotes = await post.methods.getUpVotes().call();
+    const imageHashes = await post.methods.getHash().call();
 
     const comments = await Promise.all(
       Array(parseInt(commentCount)).fill().map((element, index) => {
@@ -34,7 +36,7 @@ class PostShow extends Component {
       })
     );
 
-    return { post, title, content, upVotes, address, comments, commentCount, address };
+    return { post, title, content, upVotes, address, comments, commentCount, originalPoster, imageHashes };
     }
 
   onSubmit = async (event) => {
@@ -65,9 +67,6 @@ this.setState({ loading: false, comment: '' })
       })
     }
 
-
-
-
   render() {
     return (
       <Layout>
@@ -75,7 +74,9 @@ this.setState({ loading: false, comment: '' })
       post={this.props.address}
       title={this.props.title}
       content={this.props.content}
-      upVotes={this.props.upVote}
+      upVotes={this.props.upVotes}
+      address={this.props.originalPoster}
+      imageHash={this.props.imageHashes}
       />
       <Comment.Group style={{background: 'white', borderRadius: '10px', padding: '10px'}}>
         {this.renderComments()}

@@ -5,6 +5,8 @@ import Post from '../ethereum/post';
 import Layout from '../components/Layout';
 import { Link } from '../routes';
 import PostBox from '../components/PostBox';
+import BackgroundAnimation from '../components/BackgroundAnimation';
+import BackgroundAnimationStyles from '../components/BackgroundAnimationStyles.module.scss';
 
 class Homepage extends Component {
   static async getInitialProps() {
@@ -26,23 +28,14 @@ class Homepage extends Component {
         return Post(address).methods.getAddress().call();
       }));
 
-      return { posts, titles, contents, upVotes, address};
-  }
+      const imageHashes = await Promise.all(posts.map(async (imageHash) => {
+        return Post(imageHash).methods.getHash().call();
+      }));
 
-//   renderPosts() {
-//     var items = [];
-//     for (let i = 0; i < this.props.posts.length; i++) {
-//     var item =
-//       {
-//       header: "Votes: " + this.props.upVotes[i] + " // Posted by: " + this.props.posts[i],
-//       description: this.props.contents[i],
-//       meta:  this.props.titles[i],
-//       fluid: true
-//     }
-//     items.push(item);
-//   }
-//     return <Card.Group items={items} />
-// }
+
+
+      return { posts, titles, contents, upVotes, address, imageHashes};
+  }
 
 renderPostBox() {
   return this.props.posts.map((post, index) => {
@@ -53,17 +46,18 @@ renderPostBox() {
     title={this.props.titles[index]}
     content={this.props.contents[index]}
     upVotes={this.props.upVotes[index]}
+    imageHash={this.props.imageHashes[index]}
     />;
   })
 }
 
     render() {
-    return(
-      <Layout>
-        {this.renderPostBox()}
-      </Layout>
-    );
-  }
-}
+        return(
+          <Layout>
+            {this.renderPostBox()}
+          </Layout>
+        );
+      }
+    }
 
 export default Homepage;

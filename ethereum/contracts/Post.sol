@@ -3,8 +3,8 @@ pragma solidity ^0.4.26;
 contract PostFactory {
     address[] public deployedPostAddress;
 
-    function createPost(string title, string content) public {
-        Post newPost = new Post(msg.sender, title, content);
+    function createPost(string title, string content, string ipfsHash) public {
+        Post newPost = new Post(msg.sender, title, content, ipfsHash);
         deployedPostAddress.push(newPost);
     }
 
@@ -32,13 +32,15 @@ contract Post {
     Comment[] public comments;
     uint public commentsCount;
     mapping(address => bool) upVoters;
+    string public ipfsHash;
 
 
-    constructor(address creator, string _title, string _content) public {
+    constructor(address creator, string _title, string _content, string _ipfsHash) public {
         originalPoster = creator;
         title = _title;
         content = _content;
         commentsCount = 0;
+        ipfsHash = _ipfsHash;
     }
 
     function upVote() public payable{
@@ -97,5 +99,13 @@ contract Post {
 
     function getCommentsUpvoteCount(uint index) private view returns(uint) {
     return comments[index].upVoteCommentCount;
+    }
+
+    function sendHash (string x) public {
+        ipfsHash = x;
+    }
+
+    function getHash() public view returns (string x) {
+        return ipfsHash;
     }
 }

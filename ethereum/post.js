@@ -1,4 +1,4 @@
-import web3 from './web3';
+import { web3, metamaskStatus } from './web3';
 import Post from './build/Post.json';
 
 const PostInstance = (address) => {

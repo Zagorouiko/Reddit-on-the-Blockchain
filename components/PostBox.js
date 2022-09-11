@@ -1,15 +1,39 @@
 import React, { Component } from 'react';
-import { Card, Button, Icon, Container, Header, Divider, Grid, Message } from 'semantic-ui-react';
+import { Card, Button, Icon, Container, Header, Divider, Grid, Message, Image } from 'semantic-ui-react';
 import Post from '../ethereum/post';
 import factory from '../ethereum/factory';
-import web3 from '../ethereum/web3';
+import { web3, metamaskStatus } from '../ethereum/web3';
 import { Link } from '../routes';
+import { Router } from '../routes';
 
 class PostBox extends Component {
 
   state = {
-    errorMessage: ''
+    errorMessage: '',
+    hidden: true,
+    hiddenImage: true,
+    metaMask: metamaskStatus,
+    route: ''
   };
+
+    static async getInitialProps(props) {
+      const address = props.query.address;
+      return { address };
+    }
+
+  componentWillMount() {
+    if(this.props.imageHash !== '') {
+      this.setState({ hiddenImage: false })
+    } else {
+      this.setState({ hiddenImage: true })
+    }
+
+    if(metamaskStatus == true) {
+      this.setState({ route: '/posts/' + this.props.post })
+    } else {
+      this.setState({ route: '/NoMetamask'})
+    }
+  }
 
   upVote = async (event) => {
     try {
@@ -19,36 +43,57 @@ class PostBox extends Component {
       from: accounts[0],
       value: web3.utils.toWei('.001', 'ether'),
     })
+
+    Router.pushRoute('/');
   } catch (err) {
-    this.setState({ errorMessage: 'Already Voted' });
+
+    if (err.message == 'Invalid JSON RPC response: ""') {
+      this.setState({ hidden: false });
+      this.setState({ errorMessage: 'Metamask is not installed, please navigate to https://metamask.io/download/' });
+    } else {
+      this.setState({ hidden: false });
+      this.setState({ errorMessage: 'Already Voted' });
+    }
+
+    setTimeout(() => {
+      this.setState({ hidden: true, errorMessage: '' });
+  }, 10000);
   }
+
+  // if (this.props.address) {
+  //   Router.replaceRoute(`/posts/${this.props.address}`);
+  // } else {
+  //   Router.pushRoute('/');
+  // }
 }
 
   render() {
     return (
-    <Grid celled>
-      <Grid.Row style={{backgroundColor: "white"}}>
-        <Grid.Column width={1} style={{justifyContent: 'center', textAlign: "center"}}>
-          <i class="arrow up icon" style={{color:"#ff4500", fontSize: "35px", cursor: "pointer"}} onClick={this.upVote} ></i>
-          <span style={{lineBreak: "strict"}}>{this.props.upVotes}</span>
-          <i class="arrow down icon" style={{color:"black", paddingTop: "15px", fontSize: "35px"}}></i>
-          <Message fluid content={this.state.errorMessage} />
-        </Grid.Column>
-        <Grid.Column width={12}>
-        <Container text style={{}}>
-        <Container textAlign='left'>r/RedditOnTheBlockchain • Posted by u/<b>{this.props.address}</b></Container>
+    <Grid padding='horizontally' textAlign='center' celled >
+      <Grid.Row  style={{backgroundColor: 'white', opacity: 0.85}}>
+        <Container text>
+        <Container style={{paddingTop: '20px'}} textAlign='left'>r/RedditOnTheBlockchain • Posted by u/<b>{this.props.address}</b></Container>
+        <Link route={this.state.route}>
+        <div>
 
-        <Link route={`/posts/${this.props.post}`}>
-          <a style={{color: "black"}}>
-            <Header as='h2'>{this.props.title}</Header>
-            <Divider />
-            <p>
-              {this.props.content}
-            </p>
-          </a>
+          <Header><p style={{textAlign: 'right', display: 'inline', paddingBottom: '40px', cursor: "pointer", float: 'right'}}><i class="arrow up icon" style={{marginRight: '0', color:"#ff4500", fontSize: "25px"}}  onClick={this.upVote} ></i>{this.props.upVotes} Upvotes</p></Header>
+          <Header style={{paddingTop: '50px'}}>  <p style={{textAlign: 'left', cursor: "pointer", display: 'inline'}}>{this.props.title}</p>
+            </Header>
+        </div>
+
         </Link>
+            <p>
+              <Image fluid wrapped hidden={this.state.hiddenImage}
+                src={'https://leonidas.infura-ipfs.io/ipfs/' + this.props.imageHash}
+                onError={(event) => event.target.style.display = 'none'}
+                >
+              </Image>
+            </p>
+            <Divider />
+            {this.props.content}
+
+        <Message hidden={this.state.hidden} error content={this.state.errorMessage}/>
         </Container>
-        </Grid.Column>
       </Grid.Row>
     </Grid>
   );

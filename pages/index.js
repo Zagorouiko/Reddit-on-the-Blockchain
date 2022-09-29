@@ -38,7 +38,7 @@ class Homepage extends Component {
   }
 
 renderPostBox() {
-  return this.props.posts.map((post, index) => {
+  const postBoxList = this.props.posts.map((post, index) => {
     return <PostBox
     key={index}
     address={this.props.address[index]}
@@ -49,6 +49,16 @@ renderPostBox() {
     imageHash={this.props.imageHashes[index]}
     />;
   })
+
+    return postBoxList.sort(function(a, b) {
+      if (a.props.upVotes < b.props.upVotes) {
+        return 1;
+      }
+      if (a.props.upVotes > b.props.upVotes) {
+        return -1;
+      }
+      return 0;
+    });
 }
 
     render() {

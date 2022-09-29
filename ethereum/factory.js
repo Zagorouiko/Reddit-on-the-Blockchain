@@ -5,7 +5,7 @@ import { Router } from '../routes';
 
 const instance = new web3.eth.Contract(
   JSON.parse(PostFactory.interface),
-  "0x1873200d0F1A47951f6Bc6E34B4D8EE3e3cA62ad"
+  "0x49E52B19809212a578AC26A0000823E49F99334e"
 );
 
 export default instance;

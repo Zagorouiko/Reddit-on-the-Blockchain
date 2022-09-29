@@ -3,8 +3,8 @@ const Web3 = require('web3');
 const compiledFactory = require('./build/PostFactory.json');
 
 const provider = new HDWalletProvider(
-  process.env.REACT_APP_PROVIDER_MNEUMONIC,
-  process.env.REACT_APP_WEB3_PROVIDER_RINKEBY
+  "rabbit west enjoy female armed seat early desert unknown shoulder hollow city",
+  "https://goerli.infura.io/v3/a67b25545686435e948a74fc856d9175"
 );
 const web3 = new Web3(provider);
 

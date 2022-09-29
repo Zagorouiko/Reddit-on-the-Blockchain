@@ -77,7 +77,7 @@ class PostBox extends Component {
         <div>
 
           <Header><p style={{textAlign: 'right', display: 'inline', paddingBottom: '40px', cursor: "pointer", float: 'right'}}><i class="arrow up icon" style={{marginRight: '0', color:"#ff4500", fontSize: "25px"}}  onClick={this.upVote} ></i>{this.props.upVotes} Upvotes</p></Header>
-          <Header style={{paddingTop: '50px'}}>  <p style={{textAlign: 'left', cursor: "pointer", display: 'inline'}}>{this.props.title}</p>
+          <Header style={{paddingTop: '50px', paddingBottom: '20px'}}>  <p style={{textAlign: 'left', cursor: "pointer", display: 'inline'}}>{this.props.title}</p>
             </Header>
         </div>
 
@@ -90,7 +90,7 @@ class PostBox extends Component {
               </Image>
             </p>
             <Divider />
-            {this.props.content}
+            <p style={{paddingTop: '20px', paddingBottom: '20px', textIndent: '5px'}}>{this.props.content}</p>
 
         <Message hidden={this.state.hidden} error content={this.state.errorMessage}/>
         </Container>

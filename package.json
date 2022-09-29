@@ -5,13 +5,14 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha",
-    "dev": "next dev",
+    "dev": "node server.js",
     "build": "webpack"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@truffle/hdwallet-provider": "^1.5.1",
+    "cors": "^2.8.5",
     "fs-extra": "^10.1.0",
     "ganache-cli": "^6.12.2",
     "ipfs-api": "^22.0.1",

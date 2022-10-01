@@ -8,6 +8,9 @@
     "dev": "node server.js",
     "build": "webpack"
   },
+  "engines": {
+    "node": "16.17.0"
+  },
   "author": "",
   "license": "ISC",
   "dependencies": {

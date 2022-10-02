@@ -5,8 +5,6 @@ import Post from '../ethereum/post';
 import Layout from '../components/Layout';
 import { Link } from '../routes';
 import PostBox from '../components/PostBox';
-import BackgroundAnimation from '../components/BackgroundAnimation';
-import BackgroundAnimationStyles from '../components/BackgroundAnimationStyles.module.scss';
 
 class Homepage extends Component {
   static async getInitialProps() {

@@ -2,12 +2,9 @@ import React from 'react';
 import { Container } from 'semantic-ui-react';
 import Head from 'next/head';
 import Header from './Header';
-import BackgroundAnimation from './BackgroundAnimation';
-import './BackgroundAnimationStyles.module.scss';
 import { renderToStaticMarkup } from "react-dom/server";
 
 const Layout = (props) => {
-  const svgString = encodeURIComponent(renderToStaticMarkup(<BackgroundAnimation />));
 
   return (
   <Container>

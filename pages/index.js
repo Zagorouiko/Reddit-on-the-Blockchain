@@ -5,7 +5,7 @@ import Post from '../ethereum/post';
 import Layout from '../components/Layout';
 import { Link } from '../routes';
 import PostBox from '../components/PostBox';
-require('events').EventEmitter.prototype._maxListeners = 25;
+require('events').EventEmitter.defaultMaxListeners = 15;
 
 class Homepage extends Component {
   static async getInitialProps() {

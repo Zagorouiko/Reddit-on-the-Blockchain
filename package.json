@@ -9,10 +9,9 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha",
-    "dev": "next dev",
+    "dev": "node server.js",
     "build": "webpack",
-    "start": "next start -p $PORT",
-    "heroku-postbuild": "npm run build"
+    "start": "next start -p $PORT"
   },
   "author": "",
   "license": "ISC",

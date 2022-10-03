@@ -9,6 +9,7 @@ require('events').EventEmitter.defaultMaxListeners = 15;
 
 class Homepage extends Component {
   static async getInitialProps() {
+    require('events').EventEmitter.defaultMaxListeners = 15;
       const posts = await factory.methods.getDeployedPostAddress().call();
 
       const titles = await Promise.all(posts.map(async (title) => {
@@ -61,6 +62,7 @@ renderPostBox() {
 }
 
     render() {
+      require('events').EventEmitter.defaultMaxListeners = 15;
         return(
           <Layout>
             {this.renderPostBox()}

@@ -1,4 +1,5 @@
 module.exports = {
+  mode: 'production',
   entry: './pages/index.js',
   module: {
     rules: [
@@ -11,6 +12,9 @@ module.exports = {
       ]
     }
     ]
+  },
+  performance: {
+    hints: false
   },
   resolve: {
   fallback: {

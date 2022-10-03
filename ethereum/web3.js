@@ -14,7 +14,7 @@ if (typeof window !== "undefined" && typeof window.ethereum !== "undefined") {
   console.log('no Metamask');
   metamaskStatus = false;
   const provider = new Web3.providers.HttpProvider(
-    process.env.REACT_APP_WEB3_PROVIDER_GOERLI
+    "https://goerli.infura.io/v3/a67b25545686435e948a74fc856d9175"
   );
   web3 = new Web3(provider);
 }

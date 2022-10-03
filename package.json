@@ -9,7 +9,7 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha",
-    "dev": "node server.js",
+    "start": "next dev",
     "build": "webpack"
   },
   "author": "",
